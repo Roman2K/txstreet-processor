@@ -98,7 +98,8 @@ export default abstract class BlockchainWrapper extends EventEmitter {
      */
     public abstract getCurrentHeight(): Promise<null | number>;
 
-    public isDisconnectError(_: Error): boolean {
-      return false;
+    public isDisconnectError(err: Error): boolean {
+      const errObj: any = (err as any);
+      return (errObj.errno == 'ECONNRESET' || errObj.code == 'ECONNRESET');
     }
 }
