@@ -31,6 +31,9 @@ const chainsChecks = (): checksMap => {
       "bulk-eth-api": checkBulkEthApi,
       "eth-node": checkEthNode,
     },
+    "ARBI": {
+      "arbi-node": checkArbiNode,
+    },
     // "BTC": {
     //   "btc-node": checkBtcNode,
     // },
@@ -56,6 +59,12 @@ const chainsChecks = (): checksMap => {
 
 const checkEthNode = async (): Promise<void> => {
   const wrapper = config.initEthWrapper();
+
+  await wrapper.getCurrentHeight();
+};
+
+const checkArbiNode = async (): Promise<void> => {
+  const wrapper = config.initArbiWrapper();
 
   await wrapper.getCurrentHeight();
 };
