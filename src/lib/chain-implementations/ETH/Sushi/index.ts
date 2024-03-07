@@ -53,7 +53,7 @@ const swap = async (sushi: any, address1: string, amount1: number, address2: str
 
 const getData = async (sushi:any, transaction: any): Promise<string | boolean> => {
     try {
-        if(transaction.to.toLowerCase() != "0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f" || !transaction.input) return false;
+        if(transaction.to?.toLowerCase() != "0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f" || !transaction.input) return false;
         const decoded: any = abiDecoder.decodeMethod(transaction.input); 
         if(!decoded || !decoded.name) return false;
         if (decoded.name == "swapExactTokensForETH" 
@@ -143,7 +143,7 @@ class Sushi extends ChainImplementation {
     }
 
     async validate(transaction: any): Promise<boolean> {
-        return this.addresses.includes(transaction.to)
+        return this.addresses.includes(transaction.to?.toLowerCase())
     }
 
     async execute(transaction: any): Promise<boolean> {

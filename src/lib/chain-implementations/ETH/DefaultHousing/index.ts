@@ -25,11 +25,11 @@ class DefaultHousing extends ChainImplementation {
     }
 
     async validate(transaction: any): Promise<boolean> {
-        return this.mapAddressToHouse[transaction.to.toLowerCase()] != null; 
+        return this.mapAddressToHouse[transaction.to?.toLowerCase()] != null; 
     }
 
     async execute(transaction: any): Promise<boolean> {
-        transaction.house = this.mapAddressToHouse[transaction.to.toLowerCase()];
+        transaction.house = this.mapAddressToHouse[transaction.to?.toLowerCase()];
         return true; 
     }
 }

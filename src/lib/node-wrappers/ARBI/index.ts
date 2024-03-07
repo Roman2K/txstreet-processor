@@ -5,7 +5,7 @@ import Web3 from 'web3';
 export default class ARBIWrapper extends BlockchainWrapper {
     private web3: Web3;
 
-    constructor() {
+    constructor(host: string) {
         super('ARBI');
 
         // Initialize web3
@@ -24,7 +24,7 @@ export default class ARBIWrapper extends BlockchainWrapper {
             }
         };
 
-        const provider = new Web3.providers.WebsocketProvider(process.env.QUICKNODE_ARBI, options); 
+        const provider = new Web3.providers.WebsocketProvider(host, options); 
         this.web3 = new Web3(provider); 
     }
 

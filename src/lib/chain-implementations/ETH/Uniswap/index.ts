@@ -53,7 +53,7 @@ const swap = async (uniswap: any, address1: string, amount1: number, address2: s
 
 const getData = async (uniswap: any, transaction: any): Promise<string | boolean> => {
     try {
-        if (transaction.to.toLowerCase() != "0x7a250d5630b4cf539739df2c5dacb4c659f2488d" || !transaction.input) return false;
+        if (transaction.to?.toLowerCase() != "0x7a250d5630b4cf539739df2c5dacb4c659f2488d" || !transaction.input) return false;
         const decoded: any = abiDecoder.decodeMethod(transaction.input);
         if (!decoded || !decoded.name) return false;
         if (decoded.name == "swapExactTokensForETH"
@@ -143,7 +143,7 @@ class Uniswap extends ChainImplementation {
     }
 
     async validate(transaction: any): Promise<boolean> {
-        return this.addresses.includes(transaction.to.toLowerCase())
+        return this.addresses.includes(transaction.to?.toLowerCase())
     }
 
     async execute(transaction: any): Promise<boolean> {

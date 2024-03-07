@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import { ETHWrapper, ETHBesuWrapper } from '../node-wrappers';
+import { ETHWrapper, ETHBesuWrapper, ARBIWrapper } from '../node-wrappers';
 import { chainConfig } from '../../data/chains';
 import minimist from 'minimist';
 
@@ -24,8 +24,10 @@ class Config {
 
   private ethNodeUrl:      string;
   private ethBesuNodeUrl:  string | null;
+  private arbiNodeUrl:     string;
   private healthcheckPort: number | null;
   private ethWrapper:      ETHWrapper | null;
+  private arbiWrapper:     ARBIWrapper | null;
 
   constructor(env: envMap = process.env) {
     this.assignPublicVariables(env);
@@ -68,8 +70,10 @@ class Config {
   private assignPrivateVariables(env: envMap): void {
     this.ethNodeUrl      = env.ETH_NODE;
     this.ethBesuNodeUrl  = env.ETH_BESU_NODE;
+    this.arbiNodeUrl     = env.ARBI_NODE;
     this.healthcheckPort = numberOrNull(env.HEALTHCHECK_PORT);
     this.ethWrapper      = null;
+    this.arbiWrapper     = null;
 
     if (this.ethBesuNodeUrl) {
       if (!/^wss?:/i.test(this.ethBesuNodeUrl)) {
@@ -81,15 +85,17 @@ class Config {
       }
     }
 
+    if (!/^wss?:/i.test(this.arbiNodeUrl)) {
+      throw new Error("Invalid $ARBI_NODE");
+    }
+
     if (this.healthcheckPort && !isPort(this.healthcheckPort)) {
       throw new Error("Invalid port in $HEALTHCHECK_PORT");
     }
   }
 
   public initEthWrapper(): ETHWrapper {
-    if (!this.ethWrapper) {
-      this.ethWrapper = this.newEthWrapper();
-    }
+    if (!this.ethWrapper) this.ethWrapper = this.newEthWrapper();
 
     return this.ethWrapper;
   }
@@ -102,6 +108,12 @@ class Config {
     if (!this.ethBesuNodeUrl) return null;
 
     return new ETHBesuWrapper(this.ethBesuNodeUrl);
+  }
+
+  public initArbiWrapper(): ARBIWrapper {
+    if (!this.arbiWrapper) this.arbiWrapper = new ARBIWrapper(this.arbiNodeUrl);
+
+    return this.arbiWrapper;
   }
 
   public enabledChains(): string[] {

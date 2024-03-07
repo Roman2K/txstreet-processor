@@ -145,7 +145,7 @@ class Opensea extends ChainImplementation {
   async validate(transaction: any): Promise<boolean> {
     //Needed to test locally without db
     // return(transaction.to === '0x7Be8076f4EA4A4AD08075C2508e481d6C946D12b'.toLowerCase());
-    return this.addresses.includes(transaction.to.toLowerCase());
+    return this.addresses.includes(transaction.to?.toLowerCase());
   }
 
   async execute(transaction: any): Promise<boolean> {
@@ -153,7 +153,7 @@ class Opensea extends ChainImplementation {
       return true;
     transaction.house = 'opensea';
 
-    const to = transaction.to.toLowerCase();
+    const to = transaction.to?.toLowerCase();
     if (to === '0x7be8076f4ea4a4ad08075c2508e481d6c946d12b' || to === '0x7f268357a8c2552623316e2562d90e642bb538e5') {
       if (!transaction.extras)
         transaction.extras = { showBubble: false };

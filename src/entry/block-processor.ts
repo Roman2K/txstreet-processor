@@ -75,7 +75,8 @@ const run = async () => {
 
     if(nodesToInit.includes('ARBI')) {
         initHooks("ARBI");
-        const arbiWrapper = new Wrappers.ARBIWrapper();
+
+        const arbiWrapper = config.initArbiWrapper();
         nonBlockingInfiniteLoop(arbiWrapper); 
     }
 

@@ -168,8 +168,7 @@ const init = async () => {
     }
 
     if (chainsToSubscribe.includes('ARBI')) {
-        const wrapperClass = await import("../lib/node-wrappers/ARBI");
-        let arbiWrapper = new wrapperClass.default();
+        const arbiWrapper = config.initArbiWrapper();
 
         // Hooks.initHooks('ETH', mongodb, redis);
 
